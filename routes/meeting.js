@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { Book } = require("../models");
+const { Meeting } = require("../models");
 const validator = require("validator");
 
 // get all users
@@ -48,7 +48,7 @@ router.post("/", async (req, res) => {
     if (errors.length > 0) {
       res.send(errors);
     } else {
-      const book = await Book.create({
+      const meet = await Meeting.create({
         uuid: uuid(),
         first_name: firstName,
         last_name: lastName,
@@ -58,7 +58,7 @@ router.post("/", async (req, res) => {
         status: false,
       });
 
-      res.send(book);
+      res.send(meet);
     }
   } catch (err) {
     console.log(err);

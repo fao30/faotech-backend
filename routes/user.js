@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const bcrypt = require("bcyrpt");
+const bcrypt = require("bcrypt");
 const validator = require("validator");
 const { User } = require("../models");
 const { v4: uuid } = require("uuid");
