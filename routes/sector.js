@@ -1,11 +1,6 @@
 const router = require("express").Router();
+const { getAllSectors } = require("../controller/sectorCont");
 
-const { Sector } = require("../models");
-
-router.get("/", async (req, res) => {
-  const sectors = await Sector.findAll();
-
-  res.send(sectors);
-});
+router.get("/", getAllSectors);
 
 module.exports = router;

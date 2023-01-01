@@ -1,10 +1,6 @@
 const router = require("express").Router();
-const { Stack } = require("../models");
+const { getAllStacks } = require("../controller/stackCont");
 
-router.get("/", async (req, res) => {
-  const stacks = await Stack.findAll();
-
-  res.send(stacks);
-});
+router.get("/", getAllStacks);
 
 module.exports = router;
