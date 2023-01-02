@@ -1,5 +1,7 @@
-const { Sector } = require("../models");
+const { Sectors } = require("../models");
 
-const getStacks = async () => await Sector.findAll();
+const geAllSectorsService = () => {
+  return Sectors.findAll();
+};
 
-module.exports = getStacks;
+module.exports = geAllSectorsService;

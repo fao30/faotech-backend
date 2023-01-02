@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { getAllStacks } = require("../controller/stackCont");
+const getAllStacks = require("../controller/stackCont");
 
 router.get("/", getAllStacks);
 

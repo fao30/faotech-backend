@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       icon_link: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
     },
     {

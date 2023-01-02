@@ -1,5 +1,7 @@
 const { Stack } = require("../models");
 
-const getSectors = async () => await Stack.findAll();
+const getStack = () => {
+  return Stack.findAll();
+};
 
-module.exports = getSectors;
+module.exports = getStack;

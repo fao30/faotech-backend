@@ -1,7 +1,8 @@
-const { getSectors } = require("../service/sectorService");
+const geAllSectorsService = require("../service/sectorService");
 
-const getAllSectors = (req, res) => {
-  const sectors = getSectors;
+const getAllSectors = async (req, res) => {
+  const sectors = await geAllSectorsService();
+
   res.send(sectors);
 };
 

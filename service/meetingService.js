@@ -1,7 +1,11 @@
 const { Meeting } = require("../models");
 
-const findAllMeetings = async () => await Meeting.findAll();
+findAllMeetings = () => {
+  return Meeting.findAll();
+};
 
-const findMeetingByUuid = async (uuid) => await Meeting.findById(uuid);
+findMeetingByUuid = (uuid) => {
+  return Meeting.findOne({ where: { uuid } });
+};
 
-module.exports = { findAllMeetings, findMeetingByUuid };
+module.exports = findAllMeetings;

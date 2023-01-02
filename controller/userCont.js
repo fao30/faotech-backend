@@ -2,9 +2,9 @@ const bcrypt = require("bcrypt");
 const validator = require("validator");
 const { User } = require("../models");
 const { v4: uuid } = require("uuid");
-const { getAllUsersService } = require("../service/userService");
+const getAllUsersService = require("../service/userService");
 
-const createUser = async (req, res) => {
+const createUser = async (req, res, next) => {
   const { email, password } = req.body;
 
   const errors = [];
@@ -36,8 +36,8 @@ const createUser = async (req, res) => {
   }
 };
 
-const getAllUsers = (req, res) => {
-  const users = getAllUsersService;
+const getAllUsers = async (req, res, next) => {
+  const users = await getAllUsersService();
 
   res.send(users);
 };

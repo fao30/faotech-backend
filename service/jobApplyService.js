@@ -1,5 +1,7 @@
 const { JobApply } = require("../models");
 
-const findAllJobApply = async () => await JobApply.findAll();
+const findAllJobApply = () => {
+  return JobApply.findAll();
+};
 
 module.exports = findAllJobApply;

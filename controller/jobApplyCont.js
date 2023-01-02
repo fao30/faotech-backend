@@ -1,5 +1,5 @@
-const { JobApply } = require("../models");
-const { findAllJobApply } = require("../service/jobApplyService");
+const { JobApply } = require("../models/jobapply");
+const findAllJobApply = require("../service/jobApplyService");
 const validator = require("validator");
 const { v4: uuid } = require("uuid");
 
@@ -56,7 +56,7 @@ const createJobApply = async (req, res) => {
 };
 
 const getAllJobApply = async (req, res) => {
-  const jobApplies = findAllJobApply;
+  const jobApplies = await findAllJobApply();
 
   res.send(jobApplies);
 };
