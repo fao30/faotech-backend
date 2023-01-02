@@ -1,7 +1,6 @@
 const validator = require("validator");
 const { v4: uuid } = require("uuid");
 const meetingRoutes = require("../service/meetingService");
-// const { findMeetingByUuid } = require("../service/meetingService");
 
 const createMeeting = async (req, res) => {
   const { firstName, lastName, companyName, jobTitle, businessEmail, phone } =
@@ -47,7 +46,6 @@ const createMeeting = async (req, res) => {
 
 const getAllMeetings = async (req, res) => {
   const meetings = await meetingRoutes.findAllMeetings();
-
   res.send(meetings);
 };
 

@@ -5,7 +5,7 @@ const findAllMeetings = () => {
 };
 
 const findMeetingByUuid = (uuid) => {
-  return Meeting.findAll({ where : { uuid }});
+  return Meeting.findOne({ where: { uuid } });
 };
 module.exports = {
   findAllMeetings,

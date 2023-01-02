@@ -1,5 +1,11 @@
 const { Contact } = require("../models");
 
-const findAllContacts = () => Contact.findAll();
+const findAllContacts = () => {
+  return Contact.findAll();
+};
 
-module.exports = findAllContacts;
+const findContactByUuid = (uuid) => {
+  return Contact.findOne({ where: { uuid } });
+};
+
+module.exports = { findAllContacts, findContactByUuid };

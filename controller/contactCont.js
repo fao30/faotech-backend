@@ -1,7 +1,7 @@
 const { Contact } = require("../models/contact");
 const validator = require("validator");
 const { v4: uuid } = require("uuid");
-const findAllContacts = require("../service/contactService");
+const contactService = require("../service/contactService");
 
 const createContact = async (req, res) => {
   const { firstName, lastName, email, phone, message } = req.body;
@@ -37,9 +37,21 @@ const createContact = async (req, res) => {
 };
 
 const getAllContact = async (req, res) => {
-  const contacts = await findAllContacts();
+  const contacts = await contactService.findAllContacts();
 
   res.send(contacts);
 };
 
-module.exports = { createContact, getAllContact };
+const getContactByUuid = async (req, res) => {
+  const { uuid } = req.params;
+
+  try {
+    const contact = await contactService.findContactByUuid(uuid);
+
+    res.send(contact);
+  } catch (err) {
+    res.send(err).status(500);
+  }
+};
+
+module.exports = { createContact, getAllContact, getContactByUuid };
