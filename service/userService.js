@@ -4,4 +4,8 @@ const getAllUsersService = () => {
   return User.findAll();
 };
 
-module.exports = getAllUsersService;
+const findUserByUuid = (uuid) => {
+  return User.findAll({ where: { uuid } });
+};
+
+module.exports = { getAllUsersService, findUserByUuid };

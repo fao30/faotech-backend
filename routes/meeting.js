@@ -8,7 +8,7 @@ const {
 // get all users
 router.get("/", getAllMeetings);
 
-// get user by uuid
+// get meeting by uuid
 router.get("/:uuid", getMeetingByUuid);
 
 // create a user

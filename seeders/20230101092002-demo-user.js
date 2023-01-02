@@ -11,6 +11,20 @@ module.exports = {
         createdAt: new Date().toLocaleDateString(),
         updatedAt: new Date().toLocaleDateString(),
       },
+      {
+        uuid: uuid(),
+        email: "caonima1223@gmail.com",
+        password: uuid(),
+        createdAt: new Date().toLocaleDateString(),
+        updatedAt: new Date().toLocaleDateString(),
+      },
+      {
+        uuid: uuid(),
+        email: "russkicelovek@yandex.ru",
+        password: uuid(),
+        createdAt: new Date().toLocaleDateString(),
+        updatedAt: new Date().toLocaleDateString(),
+      },
     ]);
   },
 
