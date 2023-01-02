@@ -1,30 +1,10 @@
-const router = require("express").Router();
-const { Book } = require("../models");
 const validator = require("validator");
+const { v4: uuid } = require("uuid");
+const findAllMeetings = require("../service/meetingService");
+// const { findMeetingByUuid } = require("../service/meetingService");
+findMeetingByUuid;
 
-// get all users
-router.get("/", async (req, res) => {
-  const users = await Book.findAll();
-
-  res.send(users);
-});
-
-// get user by uuid
-router.get("/:uuid", async (req, res) => {
-  const { uuid } = req.params;
-
-  try {
-    const user = await Book.findById(uuid);
-
-    res.send(user);
-  } catch (err) {
-    console.log(err);
-    res.send(err).status(500);
-  }
-});
-
-// create a user
-router.post("/", async (req, res) => {
+const createMeeting = async (req, res) => {
   const { firstName, lastName, companyName, jobTitle, businessEmail, phone } =
     req.body;
 
@@ -48,7 +28,7 @@ router.post("/", async (req, res) => {
     if (errors.length > 0) {
       res.send(errors);
     } else {
-      const book = await Book.create({
+      const meet = await Meeting.create({
         uuid: uuid(),
         first_name: firstName,
         last_name: lastName,
@@ -58,12 +38,30 @@ router.post("/", async (req, res) => {
         status: false,
       });
 
-      res.send(book);
+      res.send(meet);
     }
   } catch (err) {
     console.log(err);
     res.send(err).status(500);
   }
-});
+};
 
-module.exports = router;
+const getAllMeetings = async (req, res) => {
+  const meetings = await findAllMeetings();
+
+  res.send(meetings);
+};
+
+const getMeetingByUuid = async (req, res) => {
+  const { uuid } = req.params;
+
+  try {
+    const meeting = await findMeetingByUuid(uuid);
+    res.send(meeting);
+  } catch (err) {
+    console.log(err);
+    res.send(err).status(500);
+  }
+};
+
+module.exports = { createMeeting, getAllMeetings, getMeetingByUuid };

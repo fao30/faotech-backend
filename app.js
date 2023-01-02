@@ -31,5 +31,7 @@ app.listen(PORT, async () => {
 // routes
 app.use("/register", require("./routes/user"));
 app.use("/job-apply", require("./routes/jobApply"));
-app.use("/book-meeting", require("./routes/book"));
+app.use("/meeting", require("./routes/meeting"));
 app.use("/contact", require("./routes/contact"));
+app.use("/sector", require("./routes/sector"));
+app.use("/stack", require("./routes/stack"));
