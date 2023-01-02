@@ -4,7 +4,6 @@ const {
   getAllContact,
   getContactByUuid,
 } = require("../controller/contactCont");
-const { Contact } = require("../models");
 
 // get all contacts info
 router.get("/", getAllContact);

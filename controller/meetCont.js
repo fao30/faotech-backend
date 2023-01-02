@@ -1,6 +1,6 @@
 const validator = require("validator");
 const { v4: uuid } = require("uuid");
-const findAllMeetings = require("../service/meetingService");
+const meetingRoutes = require("../service/meetingService");
 
 const createMeeting = async (req, res) => {
   const { firstName, lastName, companyName, jobTitle, businessEmail, phone } =
@@ -45,18 +45,15 @@ const createMeeting = async (req, res) => {
 };
 
 const getAllMeetings = async (req, res) => {
-  const meetings = await findAllMeetings();
-
+  const meetings = await meetingRoutes.findAllMeetings();
   res.send(meetings);
 };
 
 const getMeetingByUuid = async (req, res) => {
-  const { uuid } = req.params;
-
-  console.log("controller");
   try {
-    const meeting = await findMeetingByUuid(uuid);
-    res.send(meeting);
+    const { uuid } = req.params;
+    const respond = await meetingRoutes.findMeetingByUuid(uuid);
+    res.send(respond);
   } catch (err) {
     console.log(err);
     res.send(err).status(500);
