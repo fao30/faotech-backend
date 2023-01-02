@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const validator = require("validator");
 const { User } = require("../models");
 const { v4: uuid } = require("uuid");
-const getAllUsersService = require("../service/userService");
+const userService = require("../service/userService");
 
 const createUser = async (req, res, next) => {
   const { email, password } = req.body;
@@ -37,9 +37,20 @@ const createUser = async (req, res, next) => {
 };
 
 const getAllUsers = async (req, res, next) => {
-  const users = await getAllUsersService();
+  const users = await userService.getAllUsersService();
 
   res.send(users);
 };
 
-module.exports = { getAllUsers, createUser };
+const getUserByUuid = async (req, res) => {
+  try {
+    const { uuid } = req.params;
+    const respond = await userService.findUserByUuid(uuid);
+    res.send(respond);
+  } catch (err) {
+    console.log(err);
+    res.send(err).status(500);
+  }
+};
+
+module.exports = { getAllUsers, createUser, getUserByUuid };
