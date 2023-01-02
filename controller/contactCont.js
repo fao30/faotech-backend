@@ -42,4 +42,16 @@ const getAllContact = async (req, res) => {
   res.send(contacts);
 };
 
-module.exports = { createContact, getAllContact };
+const getContactByUuid = async (req, res) => {
+  const { uuid } = req.params;
+
+  try {
+    const contact = await Contact.findOne({ where: { uuid } });
+
+    res.send(contact);
+  } catch (err) {
+    res.send(err).status(500);
+  }
+};
+
+module.exports = { createContact, getAllContact, getContactByUuid };

@@ -5,6 +5,7 @@ findAllMeetings = () => {
 };
 
 findMeetingByUuid = (uuid) => {
+  console.log("service");
   return Meeting.findOne({ where: { uuid } });
 };
 
