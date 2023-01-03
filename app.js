@@ -3,6 +3,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
 const cors = require("cors");
+const multer = require("multer");
+const path = require("path");
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -16,7 +18,19 @@ const corsConfig = {
 // import sequelize
 const { sequelize } = require("./models");
 
+// import imageConfig
+const uploadImageConfig = require("./service/uploadImageService");
+
 app.use(cors(corsConfig));
+
+// image upload config middleware
+app.use(
+  multer({
+    storage: uploadImageConfig.fileStorage,
+    fileFilter: uploadImageConfig.fileFilter,
+  }).single("imgUrl")
+);
+app.use("/image", express.static(path.join(__dirname, "images")));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -29,9 +43,23 @@ app.listen(PORT, async () => {
 });
 
 // routes
+// register routes (routes -> user)
 app.use("/register", require("./routes/user"));
+
+// jobApply routes (routes -> jobApply)
 app.use("/job-apply", require("./routes/jobApply"));
+
+// meeting routes (routes -> meeting)
 app.use("/meeting", require("./routes/meeting"));
+
+// contact routes (routes -> contact)
 app.use("/contact", require("./routes/contact"));
+
+// sector routes (routes -> sector)
 app.use("/sector", require("./routes/sector"));
+
+// stack routes (routes -> stack)
 app.use("/stack", require("./routes/stack"));
+
+// image routes (routes -> image)
+app.use("/image", require("./routes/image"));
