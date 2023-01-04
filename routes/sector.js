@@ -1,6 +1,14 @@
 const router = require("express").Router();
-const getAllSectors = require("../controller/sectorCont");
+const sectorCont = require("../controller/sectorCont");
 
-router.get("/", getAllSectors);
+router.get("/", sectorCont.getAllSectors);
+
+router.get("/:uuid", sectorCont.getSectorByUuid);
+
+router.post("/", sectorCont.createSector);
+
+router.patch("/:uuid", sectorCont.updateSector);
+
+router.delete("/:uuid", sectorCont.deleteSector);
 
 module.exports = router;

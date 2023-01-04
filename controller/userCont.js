@@ -53,4 +53,37 @@ const getUserByUuid = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers, createUser, getUserByUuid };
+const updateUser = async (req, res) => {
+  try {
+    const { uuid } = req.params;
+    const { email } = req.body;
+
+    const oldUser = await User.findOne({ where: { uuid } });
+    oldUser.email = email;
+    const newUser = await User.save();
+
+    res.send(newUser);
+  } catch (err) {
+    res.sendStatus(403);
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const { uuid } = req.params;
+
+    await User.delete({ where: { uuid } });
+
+    res.send("User deleted successfully");
+  } catch (err) {
+    res.sendStatus(403);
+  }
+};
+
+module.exports = {
+  getAllUsers,
+  createUser,
+  getUserByUuid,
+  updateUser,
+  deleteUser,
+};

@@ -4,4 +4,7 @@ const geAllSectorsService = () => {
   return Sectors.findAll();
 };
 
-module.exports = geAllSectorsService;
+const getServiceByUuid = (uuid) => {
+  return Sectors.findOne({ where: { uuid } });
+};
+module.exports = { geAllSectorsService, getServiceByUuid };

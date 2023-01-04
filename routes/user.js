@@ -1,16 +1,15 @@
 const router = require("express").Router();
-const {
-  getAllUsers,
-  getUserByUuid,
-  createUser,
-} = require("../controller/userCont");
-const contactService = require("../service/userService");
+const userCont = require("../controller/userCont");
 
-router.get("/", getAllUsers);
-
-router.post("/", createUser);
+router.get("/", userCont.getAllUsers);
 
 // get user by uuid
-router.get("/:uuid", getUserByUuid);
+router.get("/:uuid", userCont.getUserByUuid);
+
+router.post("/", userCont.createUser);
+
+router.patch("/:uuid", userCont.updateUser);
+
+router.delete("/:uuid", userCont.deleteUser);
 
 module.exports = router;

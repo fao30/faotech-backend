@@ -72,9 +72,21 @@ const updateContact = async (req, res) => {
   }
 };
 
+const deletedContact = async (req, res) => {
+  try {
+    const { uuid } = req.params;
+    await Contact.delete({ where: { uuid } });
+
+    res.send("Contact deleted successfully");
+  } catch (err) {
+    res.sendStatus(403);
+  }
+};
+
 module.exports = {
   createContact,
   getAllContact,
   getContactByUuid,
   updateContact,
+  deletedContact,
 };
