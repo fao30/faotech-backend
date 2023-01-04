@@ -1,7 +1,9 @@
-const { Contact } = require("../models/contact");
+const { Contact } = require("../models");
 const validator = require("validator");
 const { v4: uuid } = require("uuid");
 const contactService = require("../service/contactService");
+const transporter = require("../config/nodemailerConfig");
+const mailOptions = require("../service/others/nodemailerOption");
 
 const createContact = async (req, res) => {
   const { firstName, lastName, email, phone, message } = req.body;
@@ -27,6 +29,11 @@ const createContact = async (req, res) => {
         phone,
         message,
       });
+
+      // await transporter.sendMail(mailOptions, (err, info) => {
+      //   if (err) return res.sendStatus(401);
+      //   console.log(`Email sent: ${info.response}`);
+      // });
 
       res.render(contact);
     }

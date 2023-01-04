@@ -7,7 +7,7 @@ const multer = require("multer");
 const path = require("path");
 const jwt = require("jsonwebtoken");
 
-const generateAccessToken = require("./service/auth/generateToken");
+const generateAccessToken = require("./service/others/generateToken");
 const { Tokens } = require("./models");
 
 const PORT = process.env.PORT || 3000;
