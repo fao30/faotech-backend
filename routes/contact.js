@@ -3,7 +3,9 @@ const {
   createContact,
   getAllContact,
   getContactByUuid,
+  updateContact,
 } = require("../controller/contactCont");
+const authenticateToken = require("../config/jwtAuth");
 
 // get all contacts info
 router.get("/", getAllContact);
@@ -12,6 +14,9 @@ router.get("/", getAllContact);
 router.get("/:uuid", getContactByUuid);
 
 // create a new contact
-router.post("/", createContact);
+router.post("/", authenticateToken, createContact);
+
+// update contact
+router.patch("/:uuid", updateContact);
 
 module.exports = router;

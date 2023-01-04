@@ -54,4 +54,27 @@ const getContactByUuid = async (req, res) => {
   }
 };
 
-module.exports = { createContact, getAllContact, getContactByUuid };
+const updateContact = async (req, res) => {
+  const { uuid } = req.params;
+  const { first_name, last_name, email, phone, message } = req.body;
+  try {
+    const oldData = await contactService.findContactByUuid(uuid);
+    oldData.first_name = first_name;
+    oldData.last_name = last_name;
+    oldData.email = email;
+    oldData.phone = phone;
+    oldData.message = message;
+    const newData = await oldData.save();
+    res.send(newData);
+  } catch (err) {
+    console.log(err);
+    res.send(err).status(500);
+  }
+};
+
+module.exports = {
+  createContact,
+  getAllContact,
+  getContactByUuid,
+  updateContact,
+};
