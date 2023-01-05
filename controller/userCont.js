@@ -1,8 +1,13 @@
 const bcrypt = require("bcrypt");
 const validator = require("validator");
-const { User } = require("../models");
+const { User, Tokens } = require("../models");
 const { v4: uuid } = require("uuid");
 const userService = require("../service/userService");
+const generateAccessToken = require("../service/others/generateToken");
+
+// import dependencies JWT
+require("dotenv").config();
+const jwt = require("jsonwebtoken");
 
 const createUser = async (req, res, next) => {
   const { email, password } = req.body;
@@ -22,17 +27,24 @@ const createUser = async (req, res, next) => {
     if (errors.length > 0) {
       res.render(errors);
     } else {
-      const user = await User.create({
+      await User.create({
         uuid: uuid(),
         email,
         password: hashPassword,
       });
 
-      res.render(user);
+      const userPayload = {
+        username: process.env.USERNAME_USER_TOKEN,
+        email: process.env.EMAIL_USER_TOKEN,
+      };
+
+      const accessToken = generateAccessToken(userPayload);
+
+      res.json({ accessToken });
     }
   } catch (err) {
     console.log(err);
-    res.send(err).status(500);
+    res.send(err).status(401);
   }
 };
 

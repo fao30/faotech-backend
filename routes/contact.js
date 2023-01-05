@@ -6,7 +6,8 @@ const {
   updateContact,
   deletedContact,
 } = require("../controller/contactCont");
-const authenticateToken = require("../config/jwtAuth");
+
+const authenticateJWT = require("../middleware/jwtAuth");
 
 // get all contacts info
 router.get("/", getAllContact);
@@ -15,12 +16,12 @@ router.get("/", getAllContact);
 router.get("/:uuid", getContactByUuid);
 
 // create a new contact
-router.post("/", authenticateToken, createContact);
+router.post("/", authenticateJWT, createContact);
 
 // update contact
-router.patch("/:uuid", updateContact);
+router.patch("/:uuid", authenticateJWT, updateContact);
 
 // delete contact
-router.delete("/:uuid", deletedContact);
+router.delete("/:uuid", authenticateJWT, deletedContact);
 
 module.exports = router;

@@ -7,6 +7,8 @@ const {
   deleteMeeting,
 } = require("../controller/meetCont");
 
+const authenticateJWT = require("../middleware/jwtAuth");
+
 // get all users
 router.get("/", getAllMeetings);
 
@@ -14,10 +16,10 @@ router.get("/", getAllMeetings);
 router.get("/:uuid", getMeetingByUuid);
 
 // create a user
-router.post("/", createMeeting);
+router.post("/", authenticateJWT, createMeeting);
 
-router.patch("/:uuid", updateMeeting);
+router.patch("/:uuid", authenticateJWT, updateMeeting);
 
-router.delete("/uuid", deleteMeeting);
+router.delete("/uuid", authenticateJWT, deleteMeeting);
 
 module.exports = router;

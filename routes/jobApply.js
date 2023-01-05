@@ -7,14 +7,16 @@ const {
   deleteJobApply,
 } = require("../controller/jobApplyCont");
 
+const authenticateJWT = require("../middleware/jwtAuth");
+
 router.get("/", getAllJobApply);
 
 router.get("/:uuid", getJobApplyByUuid);
 
-router.post("/", createJobApply);
+router.post("/", authenticateJWT, createJobApply);
 
-router.patch("/:uuid", updateJobApply);
+router.patch("/:uuid", authenticateJWT, updateJobApply);
 
-router.delete("/:uuid", deleteJobApply);
+router.delete("/:uuid", authenticateJWT, deleteJobApply);
 
 module.exports = router;

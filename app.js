@@ -13,11 +13,8 @@ const { Tokens } = require("./models");
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-// cors config
-const corsConfig = {
-  origin: process.env.CORS_ORIGINS,
-  optionSuccessStatus: 200,
-};
+// cors config import
+const corsConfig = require("./config/corsConfig");
 
 // import sequelize
 const { sequelize } = require("./models");
@@ -67,55 +64,3 @@ app.use("/stack", require("./routes/stack"));
 
 // image routes (routes -> image)
 app.use("/image", require("./routes/image"));
-
-// token
-app.post("/login", async (req, res) => {
-  const user = {
-    username: process.env.USERNAME_USER_TOKEN,
-    password: process.env.PASSWORD_USER_TOKEN,
-  };
-
-  const accessToken = generateAccessToken(user);
-  const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
-
-  await Tokens.create({
-    accessToken,
-    refreshToken,
-  });
-
-  res.json({ accessToken, refreshToken });
-});
-
-app.post("/token", async (req, res) => {
-  const { token } = req.body;
-
-  try {
-    const findToken = await Tokens.findOne({ where: { refreshToken: token } });
-
-    if (token === null) return res.sendStatus(401);
-    if (!findToken) return res.sendStatus(403);
-
-    jwt.verify(findToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-      if (err) return res.sendStatus(403);
-      const accessToken = generateAccessToken({
-        username: user.username,
-        password: user.password,
-      });
-      res.json({ accessToken });
-    });
-  } catch (err) {
-    console.log(err);
-    res.send(err).status(401);
-  }
-});
-
-app.delete("/logout", async (req, res) => {
-  const { token } = req.body;
-  try {
-    await Tokens.delete({ where: { refreshToken: token } });
-    res.sendStatus(204);
-  } catch (err) {
-    console.log(err);
-    res.send(err).status(401);
-  }
-});
