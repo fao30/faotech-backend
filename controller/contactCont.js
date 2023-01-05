@@ -2,8 +2,7 @@ const { Contact } = require("../models");
 const validator = require("validator");
 const { v4: uuid } = require("uuid");
 const contactService = require("../service/contactService");
-const transporter = require("../config/nodemailerConfig");
-const mailOptions = require("../service/others/nodemailerOption");
+const sendEmail = require("../config/nodemailerConfig");
 
 const createContact = async (req, res) => {
   const { firstName, lastName, email, phone, message } = req.body;
@@ -19,7 +18,7 @@ const createContact = async (req, res) => {
     }
 
     if (errors.length > 0) {
-      res.render(errors);
+      res.send(errors);
     } else {
       const contact = await Contact.create({
         uuid: uuid(),
@@ -30,12 +29,8 @@ const createContact = async (req, res) => {
         message,
       });
 
-      // await transporter.sendMail(mailOptions, (err, info) => {
-      //   if (err) return res.sendStatus(401);
-      //   console.log(`Email sent: ${info.response}`);
-      // });
-
-      res.render(contact);
+      sendEmail(firstName, lastName, phone, email, message);
+      res.send(contact);
     }
   } catch (err) {
     console.log(err);
@@ -63,11 +58,11 @@ const getContactByUuid = async (req, res) => {
 
 const updateContact = async (req, res) => {
   const { uuid } = req.params;
-  const { first_name, last_name, email, phone, message } = req.body;
+  const { firstName, lastName, email, phone, message } = req.body;
   try {
     const oldData = await contactService.findContactByUuid(uuid);
-    oldData.first_name = first_name;
-    oldData.last_name = last_name;
+    oldData.first_name = firstName;
+    oldData.last_name = lastName;
     oldData.email = email;
     oldData.phone = phone;
     oldData.message = message;
