@@ -1,13 +1,11 @@
+require("dotenv").config();
 const bcrypt = require("bcrypt");
 const validator = require("validator");
-const { User, Tokens } = require("../models");
+const { User } = require("../models");
 const { v4: uuid } = require("uuid");
 const userService = require("../service/userService");
 const generateAccessToken = require("../service/others/generateToken");
-
-// import dependencies JWT
-require("dotenv").config();
-const jwt = require("jsonwebtoken");
+const ROLE = require("../middleware/role");
 
 const createUser = async (req, res, next) => {
   const { email, password } = req.body;
@@ -31,11 +29,12 @@ const createUser = async (req, res, next) => {
         uuid: uuid(),
         email,
         password: hashPassword,
+        role: ROLE.USER,
       });
 
       const userPayload = {
-        username: process.env.USERNAME_USER_TOKEN,
-        email: process.env.EMAIL_USER_TOKEN,
+        email,
+        role: process.env.ROLE_USER_TOKEN,
       };
 
       const accessToken = generateAccessToken(userPayload);
