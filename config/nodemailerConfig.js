@@ -1,16 +1,16 @@
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 
-const sendEmail = (firstName, lastName, phone, email, message) => {
+const sendEmail = (name, companyName, email, projectDetail) => {
   const output = ` <p>You have a new contact request</p>
     <h3>Contact Details</h3>
     <ul>  
-      <li>Name: ${firstName} ${lastName}</li>
+      <li>Name: ${name}</li>
+      <li>Company: ${companyName}</li>
       <li>Email: ${email}</li>
-      <li>Phone: ${phone}</li>
     </ul>
-    <h3>Message</h3>
-    <p>${message}</p>
+    <h3>Detail Project</h3>
+    <p>${projectDetail}</p>
     `;
 
   const mailOptions = {

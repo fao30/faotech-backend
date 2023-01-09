@@ -17,11 +17,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      first_name: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      last_name: {
+      company_name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -29,11 +29,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      phone: {
+      budget: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      message: {
+      project_detail: {
         type: DataTypes.STRING,
         allowNull: false,
       },

@@ -5,11 +5,11 @@ const contactService = require("../service/contactService");
 const sendEmail = require("../config/nodemailerConfig");
 
 const createContact = async (req, res) => {
-  const { firstName, lastName, email, phone, message } = req.body;
+  const { name, companyName, email, budget, projectDetail } = req.body;
 
   const errors = [];
   try {
-    if (!firstName || !lastName || !email || !phone || !message) {
+    if (!name || !companyName || !email || !budget || !projectDetail) {
       errors.push("Fill all the fields");
     }
 
@@ -22,14 +22,14 @@ const createContact = async (req, res) => {
     } else {
       const contact = await Contact.create({
         uuid: uuid(),
-        first_name: firstName,
-        last_name: lastName,
+        name,
+        company_name: companyName,
         email,
-        phone,
-        message,
+        budget,
+        project_detail: projectDetail,
       });
 
-      sendEmail(firstName, lastName, phone, email, message);
+      sendEmail(name, companyName, email, projectDetail);
       res.send(contact);
     }
   } catch (err) {
@@ -58,14 +58,16 @@ const getContactByUuid = async (req, res) => {
 
 const updateContact = async (req, res) => {
   const { uuid } = req.params;
-  const { firstName, lastName, email, phone, message } = req.body;
+  const { name, companyName, email, budget, projectDetail } = req.body;
+  console.log("here");
   try {
     const oldData = await contactService.findContactByUuid(uuid);
-    oldData.first_name = firstName;
-    oldData.last_name = lastName;
+    oldData.name = name;
+    oldData.company_name = companyName;
     oldData.email = email;
-    oldData.phone = phone;
-    oldData.message = message;
+    oldData.budget = budget;
+    oldData.project_detail = projectDetail;
+    console.log(oldData);
     const newData = await oldData.save();
     res.send(newData);
   } catch (err) {
