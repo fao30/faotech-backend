@@ -44,4 +44,14 @@ const createImage = async (req, res) => {
   }
 };
 
-module.exports = { getAllImages, getImageByUrl, createImage };
+const deleteImage = async (req, res) => {
+  try {
+    const { imgUrl } = req.params;
+
+    await imgUrl.delete({ where: { imgUrl } });
+  } catch (err) {
+    res.sendStatus(403);
+  }
+};
+
+module.exports = { getAllImages, getImageByUrl, createImage, deleteImage };

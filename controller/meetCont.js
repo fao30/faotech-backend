@@ -60,4 +60,53 @@ const getMeetingByUuid = async (req, res) => {
   }
 };
 
-module.exports = { createMeeting, getAllMeetings, getMeetingByUuid };
+const updateMeeting = async (req, res) => {
+  try {
+    const { uuid } = req.params;
+
+    const {
+      firstName,
+      lastName,
+      companyName,
+      jobTitle,
+      businessEmail,
+      phone,
+      status,
+    } = req.body;
+
+    const oldMeeting = await Meeting.findOne({ where: { uuid } });
+    oldMeeting.first_name = firstName;
+    oldMeeting.last_name = lastName;
+    oldMeeting.company_name = companyName;
+    oldMeeting.job_title = jobTitle;
+    oldMeeting.business_email = businessEmail;
+    oldMeeting.phone = phone;
+    oldMeeting.status = status;
+
+    const newMeeting = await Meeting.save();
+
+    res.send(newMeeting);
+  } catch (err) {
+    res.sendStatus(403);
+  }
+};
+
+const deleteMeeting = async (req, res) => {
+  try {
+    const { uuid } = req.params;
+
+    await Meeting.delete({ where: { uuid } });
+
+    res.send("Meeting deleted successfully");
+  } catch (err) {
+    res.sendStatus(403);
+  }
+};
+
+module.exports = {
+  createMeeting,
+  getAllMeetings,
+  getMeetingByUuid,
+  updateMeeting,
+  deleteMeeting,
+};

@@ -9,11 +9,8 @@ const path = require("path");
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-// cors config
-const corsConfig = {
-  origin: process.env.CORS_ORIGINS,
-  optionSuccessStatus: 200,
-};
+// cors config import
+const corsConfig = require("./config/corsConfig");
 
 // import sequelize
 const { sequelize } = require("./models");
@@ -39,7 +36,7 @@ app.use(logger("dev"));
 app.listen(PORT, async () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode in port ${PORT}`);
   await sequelize.authenticate();
-  console.log(`Database connected`);
+  console.log(`Server database connected`);
 });
 
 // routes

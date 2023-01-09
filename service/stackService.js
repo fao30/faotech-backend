@@ -1,7 +1,11 @@
 const { Stack } = require("../models");
 
-const getStack = () => {
+const getAllStack = () => {
   return Stack.findAll();
 };
 
-module.exports = getStack;
+const getStackByUuid = (uuid) => {
+  return Stack.findOne(uuid);
+};
+
+module.exports = { getAllStack, getStackByUuid };

@@ -1,14 +1,15 @@
-const { Contact } = require("../models/contact");
+const { Contact } = require("../models");
 const validator = require("validator");
 const { v4: uuid } = require("uuid");
 const contactService = require("../service/contactService");
+const sendEmail = require("../config/nodemailerConfig");
 
 const createContact = async (req, res) => {
-  const { firstName, lastName, email, phone, message } = req.body;
+  const { name, companyName, email, budget, projectDetail } = req.body;
 
   const errors = [];
   try {
-    if (!firstName || !lastName || !email || !phone || !message) {
+    if (!name || !companyName || !email || !budget || !projectDetail) {
       errors.push("Fill all the fields");
     }
 
@@ -17,18 +18,19 @@ const createContact = async (req, res) => {
     }
 
     if (errors.length > 0) {
-      res.render(errors);
+      res.send(errors);
     } else {
       const contact = await Contact.create({
         uuid: uuid(),
-        first_name: firstName,
-        last_name: lastName,
+        name,
+        company_name: companyName,
         email,
-        phone,
-        message,
+        budget,
+        project_detail: projectDetail,
       });
 
-      res.render(contact);
+      sendEmail(name, companyName, email, projectDetail);
+      res.send(contact);
     }
   } catch (err) {
     console.log(err);
@@ -54,4 +56,41 @@ const getContactByUuid = async (req, res) => {
   }
 };
 
-module.exports = { createContact, getAllContact, getContactByUuid };
+const updateContact = async (req, res) => {
+  const { uuid } = req.params;
+  const { name, companyName, email, budget, projectDetail } = req.body;
+  console.log("here");
+  try {
+    const oldData = await contactService.findContactByUuid(uuid);
+    oldData.name = name;
+    oldData.company_name = companyName;
+    oldData.email = email;
+    oldData.budget = budget;
+    oldData.project_detail = projectDetail;
+    console.log(oldData);
+    const newData = await oldData.save();
+    res.send(newData);
+  } catch (err) {
+    console.log(err);
+    res.send(err).status(500);
+  }
+};
+
+const deletedContact = async (req, res) => {
+  try {
+    const { uuid } = req.params;
+    await Contact.delete({ where: { uuid } });
+
+    res.send("Contact deleted successfully");
+  } catch (err) {
+    res.sendStatus(403);
+  }
+};
+
+module.exports = {
+  createContact,
+  getAllContact,
+  getContactByUuid,
+  updateContact,
+  deletedContact,
+};

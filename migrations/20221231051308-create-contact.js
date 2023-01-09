@@ -12,11 +12,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      first_name: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      last_name: {
+      company_name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -24,11 +24,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      phone: {
-        type: Sequelize.STRING,
+      budget: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
-      message: {
+      project_detail: {
         type: Sequelize.STRING,
         allowNull: false,
       },

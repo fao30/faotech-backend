@@ -61,4 +61,63 @@ const getAllJobApply = async (req, res) => {
   res.send(jobApplies);
 };
 
-module.exports = { createJobApply, getAllJobApply };
+const getJobApplyByUuid = async (req, res) => {
+  try {
+    const { uuid } = req.params;
+
+    const jobApply = await JobApply.findOne({ where: { uuid } });
+    res.send(jobApply);
+  } catch (err) {
+    res.sendStatus(403);
+  }
+};
+
+const updateJobApply = async (req, res) => {
+  try {
+    const { uuid } = req.params;
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      positionApply,
+      availableStartDate,
+      linkResume,
+      status,
+    } = req.body;
+
+    const oldJobApply = await JobApply.findOne({ where: { uuid } });
+    oldJobApply.first_name = firstName;
+    oldJobApply.last_name = lastName;
+    oldJobApply.email = email;
+    oldJobApply.phone = phone;
+    oldJobApply.position_apply = positionApply;
+    oldJobApply.available_start_date = availableStartDate;
+    oldJobApply.link_resume = linkResume;
+    oldJobApply.status = status;
+    const newJobApply = await JobApply.save();
+
+    res.send(newJobApply);
+  } catch (err) {
+    res.sendStatus(403);
+  }
+};
+
+const deleteJobApply = async (req, res) => {
+  try {
+    const { uuid } = req.params;
+
+    await JobApply.delete({ where: { uuid } });
+
+    res.send("Job Apply deleted successfully");
+  } catch (err) {
+    res.sendStatus(403);
+  }
+};
+module.exports = {
+  createJobApply,
+  getAllJobApply,
+  getJobApplyByUuid,
+  updateJobApply,
+  deleteJobApply,
+};
