@@ -6,20 +6,45 @@ const {
   updateMeeting,
   deleteMeeting,
 } = require("../controller/meetCont");
-
-const authenticateJWT = require("../middleware/jwtAuth");
+const passport = require("passport");
 
 // get all users
-router.get("/", getAllMeetings);
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  getAllMeetings
+);
 
 // get meeting by uuid
-router.get("/:uuid", getMeetingByUuid);
+router.get(
+  "/:uuid",
+  passport.authenticate("jwt", { session: false }),
+  getMeetingByUuid
+);
 
 // create a user
-router.post("/", authenticateJWT, createMeeting);
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  createMeeting
+);
 
-router.patch("/:uuid", authenticateJWT, updateMeeting);
+router.patch(
+  "/:uuid",
+  passport.authenticate("jwt", { session: false }),
+  updateMeeting
+);
 
-router.delete("/uuid", authenticateJWT, deleteMeeting);
+router.delete(
+  "/uuid",
+  passport.authenticate("jwt", { session: false }),
+  deleteMeeting
+);
+
+// error handling
+router.use(function (err, req, res, next) {
+  res.status(err.status || 500);
+  res.json({ error: err });
+});
 
 module.exports = router;

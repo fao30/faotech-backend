@@ -1,16 +1,41 @@
 const router = require("express").Router();
 const sectorCont = require("../controller/sectorCont");
+const passport = require("passport");
 
-const authenticateJWT = require("../middleware/jwtAuth");
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  sectorCont.getAllSectors
+);
 
-router.get("/", sectorCont.getAllSectors);
+router.get(
+  "/:uuid",
+  passport.authenticate("jwt", { session: false }),
+  sectorCont.getSectorByUuid
+);
 
-router.get("/:uuid", sectorCont.getSectorByUuid);
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  sectorCont.createSector
+);
 
-router.post("/", authenticateJWT, sectorCont.createSector);
+router.patch(
+  "/:uuid",
+  passport.authenticate("jwt", { session: false }),
+  sectorCont.updateSector
+);
 
-router.patch("/:uuid", authenticateJWT, sectorCont.updateSector);
+router.delete(
+  "/:uuid",
+  passport.authenticate("jwt", { session: false }),
+  sectorCont.deleteSector
+);
 
-router.delete("/:uuid", authenticateJWT, sectorCont.deleteSector);
+// error handling
+router.use(function (err, req, res, next) {
+  res.status(err.status || 500);
+  res.json({ error: err });
+});
 
 module.exports = router;

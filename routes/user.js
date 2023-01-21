@@ -1,16 +1,37 @@
 const router = require("express").Router();
-const userCont = require("../controller/userCont");
+const UserController = require("../controller/userCont");
 const adminAuth = require("../middleware/roleAuth");
+const passport = require("passport");
 
-router.get("/", userCont.getAllUsers);
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  UserController.getAllUsers
+);
 
 // get user by uuid
-router.get("/:uuid", userCont.getUserByUuid);
+router.get(
+  "/:uuid",
+  passport.authenticate("jwt", { session: false }),
+  UserController.getUserByUuid
+);
 
-router.post("/", adminAuth("admin"), userCont.createUser);
+router.patch(
+  "/:uuid",
+  passport.authenticate("jwt", { session: false }),
+  UserController.updateUser
+);
 
-router.patch("/:uuid", adminAuth("admin"), userCont.updateUser);
+router.delete(
+  "/:uuid",
+  passport.authenticate("jwt", { session: false }),
+  UserController.deleteUser
+);
 
-router.delete("/:uuid", adminAuth("admin"), userCont.deleteUser);
+// error handling
+// router.use(function (err, req, res, next) {
+//   res.status(err.status || 500);
+//   res.json({ error: err });
+// });
 
 module.exports = router;

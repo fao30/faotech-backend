@@ -6,22 +6,47 @@ const {
   updateContact,
   deletedContact,
 } = require("../controller/contactCont");
-
-const authenticateJWT = require("../middleware/jwtAuth");
+const passport = require("passport");
 
 // get all contacts info
-router.get("/", getAllContact);
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  getAllContact
+);
 
 // get contact by uuid
-router.get("/:uuid", getContactByUuid);
+router.get(
+  "/:uuid",
+  passport.authenticate("jwt", { session: false }),
+  getContactByUuid
+);
 
 // create a new contact
-router.post("/", authenticateJWT, createContact);
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  createContact
+);
 
 // update contact
-router.patch("/:uuid", authenticateJWT, updateContact);
+router.patch(
+  "/:uuid",
+  passport.authenticate("jwt", { session: false }),
+  updateContact
+);
 
 // delete contact
-router.delete("/:uuid", authenticateJWT, deletedContact);
+router.delete(
+  "/:uuid",
+  passport.authenticate("jwt", { session: false }),
+  deletedContact
+);
+
+// error handling
+router.use(function (err, req, res, next) {
+  res.status(err.status || 500);
+  res.json({ error: err });
+});
 
 module.exports = router;

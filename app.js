@@ -18,6 +18,8 @@ const { sequelize } = require("./models");
 // import imageConfig
 const uploadImageConfig = require("./service/uploadImageService");
 
+require("./middleware/passportAuth");
+
 app.use(cors(corsConfig));
 
 // image upload config middleware
@@ -40,8 +42,14 @@ app.listen(PORT, async () => {
 });
 
 // routes
-// register routes (routes -> user)
-app.use("/register", require("./routes/user"));
+// login router
+app.use("/login", require("./routes/login"));
+
+// register routes
+app.use("/register", require("./routes/register"));
+
+// user routes (routes -> user)
+app.use("/user", require("./routes/user"));
 
 // jobApply routes (routes -> jobApply)
 app.use("/job-apply", require("./routes/jobApply"));

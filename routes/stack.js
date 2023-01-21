@@ -1,16 +1,41 @@
 const router = require("express").Router();
 const stackCont = require("../controller/stackCont");
+const passport = require("passport");
 
-const authenticateJWT = require("../middleware/jwtAuth");
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  stackCont.getAllStacks
+);
 
-router.get("/", stackCont.getAllStacks);
+router.get(
+  "/:uuid",
+  passport.authenticate("jwt", { session: false }),
+  stackCont.getStackByUuid
+);
 
-router.get("/:uuid", stackCont.getStackByUuid);
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  stackCont.createStack
+);
 
-router.post("/", authenticateJWT, stackCont.createStack);
+router.patch(
+  "/:uuid",
+  passport.authenticate("jwt", { session: false }),
+  stackCont.updateStack
+);
 
-router.patch("/:uuid", authenticateJWT, stackCont.updateStack);
+router.delete(
+  "/:uuid",
+  passport.authenticate("jwt", { session: false }),
+  stackCont.deleteStack
+);
 
-router.delete("/:uuid", authenticateJWT, stackCont.deleteStack);
+// error handling
+router.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    res.json({ error: err });
+  });
 
 module.exports = router;

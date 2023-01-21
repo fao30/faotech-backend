@@ -6,17 +6,42 @@ const {
   updateJobApply,
   deleteJobApply,
 } = require("../controller/jobApplyCont");
+const passport = require("passport");
 
-const authenticateJWT = require("../middleware/jwtAuth");
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  getAllJobApply
+);
 
-router.get("/", getAllJobApply);
+router.get(
+  "/:uuid",
+  passport.authenticate("jwt", { session: false }),
+  getJobApplyByUuid
+);
 
-router.get("/:uuid", getJobApplyByUuid);
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  createJobApply
+);
 
-router.post("/", authenticateJWT, createJobApply);
+router.put(
+  "/:uuid",
+  passport.authenticate("jwt", { session: false }),
+  updateJobApply
+);
 
-router.patch("/:uuid", authenticateJWT, updateJobApply);
+router.delete(
+  "/:uuid",
+  passport.authenticate("jwt", { session: false }),
+  deleteJobApply
+);
 
-router.delete("/:uuid", authenticateJWT, deleteJobApply);
+// error handling
+router.use(function (err, req, res, next) {
+  res.status(err.status || 500);
+  res.json({ error: err });
+});
 
 module.exports = router;
